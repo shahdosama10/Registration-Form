@@ -14,7 +14,7 @@
 
     <div class="container">
         <h1>Registration Form</h1>
-        <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <form method="POST" action="Upload.php" enctype="multipart/form-data" onsubmit="return validateForm();">
 
             <label for="full_name">Full Name:</label>
             <input type="text" id="full_name" name="full_name">
