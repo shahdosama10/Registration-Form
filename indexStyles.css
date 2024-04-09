@@ -35,6 +35,32 @@ body::before {
     border-radius: 12px;
     background-color: rgba(255, 255, 255, 0.8);
 }
+/* Add this CSS to style the actorsResult div */
+.actors-result {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    max-height: 200px; /* Adjust height as needed */
+    overflow-y: auto; /* Add scrollbar if content exceeds max-height */
+}
+
+/* Add this CSS to style the appearance of the result text */
+.actors-result p {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.actors-result ul {
+    list-style-type: disc; /* Use disc bullet points */
+    margin-left: 20px; /* Adjust indentation as needed */
+}
+
+.actors-result li {
+    margin-bottom: 5px;
+}
+
 
 h1 {
     text-align: center;

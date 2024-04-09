@@ -16,20 +16,20 @@
         <h1>Registration Form</h1>
         <form method="POST" action="Upload.php" enctype="multipart/form-data" onsubmit="return validateForm();">
 
-            <!-- <label for="full_name">Full Name:</label>
+            <label for="full_name">Full Name:</label>
             <input type="text" id="full_name" name="full_name">
             <br>
 
             <label for="user_name">Username:</label>
             <input type="text" id="user_name" name="user_name">
-            <br> -->
+            <br>
 
             <label for="birthdate">Birthdate:</label>
             <input type="date" id="birthdate" name="birthdate">
             <button type="button" onclick="checkActors()">Check Actors</button>
-            <div id="actorsResult"></div>
+            <div id="actorsResult" class="actors-result" hidden></div>
             <br>
-<!-- 
+
             <label for="phone">Phone:</label>
             <input type="tel" id="phone" name="phone">
             <br>
@@ -52,7 +52,7 @@
 
             <label for="user_image">User Image:</label>
             <input type="file" id="user_image" name="user_image" accept="image/*">
-            <br> -->
+            <br>
 
             <input type="submit" value="Register">
         </form>
