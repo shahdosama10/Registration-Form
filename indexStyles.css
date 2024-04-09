@@ -34,6 +34,7 @@ body::before {
     border: 1px solid #ccc;
     border-radius: 12px;
     background-color: rgba(255, 255, 255, 0.8);
+    position: relative; 
 }
 /* Add this CSS to style the actorsResult div */
 .actors-result {
@@ -59,6 +60,20 @@ body::before {
 
 .actors-result li {
     margin-bottom: 5px;
+}
+
+/* Add this CSS to style the header and footer */
+.header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px;
+    text-align: center;
+}
+
+.footer {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 0.5px;
+    text-align: center;
+
 }
 
 
