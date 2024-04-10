@@ -14,7 +14,7 @@
 
     <div class="container">
         <h1>Registration Form</h1>
-        <form method="POST" action="Upload.php" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <form method="POST" class="input_form" action="Upload.php" enctype="multipart/form-data" onsubmit="return validateForm(event);">
 
             <label for="full_name">Full Name:</label>
             <input type="text" id="full_name" name="full_name">
@@ -58,6 +58,7 @@
     </div>
 
     <?php include 'Footer.php'; ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="indexScripts.js"></script>
 
 </body>

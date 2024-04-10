@@ -1,4 +1,7 @@
-function validateForm() {
+function validateForm(event) {
+
+    event.preventDefault(); // Prevent default form submission
+
     // Get form inputs
     var fullName = document.getElementById('full_name').value;
     var userName = document.getElementById('user_name').value;
@@ -85,6 +88,32 @@ function validateForm() {
         scrollToError('user_image');
         return false;
     }
+
+    // server side validation and inserting in the database
+    $.ajax({
+        type: "POST",
+        url: "DB_Ops.php",
+        data: $("#input_form").serialize(), // get data from the form
+        success: function(response) {
+            
+            alert(response);
+
+            // if form is submitted successfully then reload the page
+            if(response.trim() === "Sign up successfully"){
+                window.location.reload();
+            }
+           
+        },
+        // in case error in the request 
+        error: function(error) {
+            alert(error.responseText)
+        }
+    });
+
+    
+
+
+
 
     return true;
 }
