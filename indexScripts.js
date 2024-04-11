@@ -47,6 +47,14 @@ function validateForm(event) {
         return false;
     }
 
+     // Validate birth year
+     var birthYear = new Date(birthdate).getFullYear();
+     if (birthYear > 2005) {
+         showError('birthdate', 'You must be born in 2005 or earlier to register.');
+         scrollToError('birthdate');
+         return false;
+     }
+ 
     // Validate phone
     if (phone.trim() === '' || !phonePattern.test(phone)) {
         showError('phone', 'Please enter a valid phone number.');
@@ -109,11 +117,6 @@ function validateForm(event) {
             alert(error.responseText)
         }
     });
-
-    
-
-
-
 
     return true;
 }
