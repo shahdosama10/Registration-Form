@@ -97,11 +97,17 @@ function validateForm(event) {
         return false;
     }
 
+    // form data that will be sent to the controller page
+    var formData = new FormData(document.querySelector('.input_form'));
+    formData.append('user_image', userImage); // add image to form data
+
     // server side validation and inserting in the database
     $.ajax({
         type: "POST",
-        url: "DB_Ops.php",
-        data: $("#input_form").serialize(), // get data from the form
+        url: "Controller.php",
+        data: formData,
+        processData: false,
+        contentType: false, 
         success: function(response) {
             
             alert(response);
