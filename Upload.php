@@ -1,16 +1,27 @@
-<!-- upload image php -->
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["user_image"])) {
-    $uploadDir = "uploads/";
-    $fileName = $_FILES["user_image"]["name"];
-    $targetFilePath = $uploadDir . $fileName;
+class ImageUploader {
+    private $uploadDir;
 
-    if (move_uploaded_file($_FILES["user_image"]["tmp_name"], $targetFilePath)) {
-        echo "Image uploaded successfully.";
-    } else {
-        echo "Error uploading file.";
+    public function __construct($uploadDir = 'uploads/') {
+        $this->uploadDir = $uploadDir;
     }
-} else {
-    echo "Invalid request.";
+
+    public function uploadImage($file) {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($file)) {
+            // Get file name
+            $fileName = basename($file["name"]);
+            $targetFilePath = $this->uploadDir . $fileName;
+
+            // Store the file to the server
+            if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
+                return "Image uploaded successfully.";
+            } else {
+                return "Error uploading file.";
+            }
+        } else {
+            return "Invalid request.";
+        }
+    }
 }
+
 ?>

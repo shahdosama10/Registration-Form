@@ -1,14 +1,16 @@
 <?php
 include 'DB_Ops.php';
+include 'Upload.php';
 
 // create object from DB model
 $dbModel = new DBModel();
+$imageUploader = new ImageUploader();
 
 // create Database 
 $result = $dbModel->createDB();
 
 // if there was an error creating the database
-if ($result != 'Done'){
+if ($result != 'Done') {
 
     echo $result;
 
@@ -17,22 +19,22 @@ if ($result != 'Done'){
     $result = $dbModel->createTable();
 
     // if there was an error creating the table
-    if($result != 'Done'){
+    if ($result != 'Done') {
         echo $result;
-    } else{
+    } else {
 
         // get the username
         $userName = $_POST['user_name'];
 
         // select the username to apply the server side validation
         $num_of_row = $dbModel->selectUsername($userName);
-        
+
         // if the username is already in the database
-        if($num_of_row!=0){
+        if ($num_of_row != 0) {
 
             echo "Username is already exists";
 
-        } else{
+        } else {
 
             // get the rest of the data from the input
             $fullName = $_POST['full_name'];
@@ -43,11 +45,22 @@ if ($result != 'Done'){
             $email = $_POST['email'];
             $user_image = basename($_POST['user_image']);
 
-            // insert into the database
+            // Upload image to the server
+            $uploadResponse = $imageUploader->uploadImage($_FILES['user_image']);
 
-            $response = $dbModel->insertUser($fullName, $userName, $birthDate, $phone, $address, $password, $email, $user_image);
+            // Check the upload response
+            if ($uploadResponse === "Image uploaded successfully.") {
+                
 
-            echo $response;
+                // Insert the user data into the database
+                $response = $dbModel->insertUser($fullName, $userName, $birthDate, $phone, $address, $password, $email, $user_image);
+
+                // Output the response from the database insertion
+                echo $response;
+            } else {
+                // Output the upload error
+                echo $uploadResponse;
+            }
 
 
         }
