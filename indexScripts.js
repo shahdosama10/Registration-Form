@@ -1,4 +1,7 @@
-function validateForm() {
+function validateForm(event) {
+
+    event.preventDefault(); // Prevent default form submission
+
     // Get form inputs
     var fullName = document.getElementById('full_name').value;
     var userName = document.getElementById('user_name').value;
@@ -44,6 +47,14 @@ function validateForm() {
         return false;
     }
 
+     // Validate birth year
+     var birthYear = new Date(birthdate).getFullYear();
+     if (birthYear > 2005) {
+         showError('birthdate', 'You must be born in 2005 or earlier to register.');
+         scrollToError('birthdate');
+         return false;
+     }
+ 
     // Validate phone
     if (phone.trim() === '' || !phonePattern.test(phone)) {
         showError('phone', 'Please enter a valid phone number.');
@@ -85,6 +96,33 @@ function validateForm() {
         scrollToError('user_image');
         return false;
     }
+
+    // form data that will be sent to the controller page
+    var formData = new FormData(document.querySelector('.input_form'));
+    formData.append('user_image', userImage); // add image to form data
+
+    // server side validation and inserting in the database
+    $.ajax({
+        type: "POST",
+        url: "Controller.php",
+        data: formData,
+        processData: false,
+        contentType: false, 
+        success: function(response) {
+            
+            alert(response);
+
+            // if form is submitted successfully then reload the page
+            if(response.trim() === "Sign up successfully"){
+                window.location.reload();
+            }
+           
+        },
+        // in case error in the request 
+        error: function(error) {
+            alert(error.responseText)
+        }
+    });
 
     return true;
 }
