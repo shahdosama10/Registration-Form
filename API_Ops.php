@@ -1,11 +1,34 @@
 <?php
 
-$birthdate = $_GET['birthdate'];
+// Check if birthdate is provided
+if(isset($_GET['birthdate']) && !empty($_GET['birthdate'])) {
+    $birthdate = $_GET['birthdate'];
+    
+    // Add the current year to make strtotime() parse the date correctly
+    $current_year = date('Y');
+    $birthdate_with_year = $current_year . '-' . $birthdate;
+    
+    // Convert the birthdate string into a date object
+    $birthdate_date = strtotime($birthdate_with_year);
+    
+    // Check if the conversion was successful
+    if($birthdate_date !== false) {
+        // Extract day and month
+        $day = date('d', $birthdate_date);
+        $month = date('m', $birthdate_date);
+    } else {
+        echo "Invalid birthdate format!";
+        exit;
+    }
+} else {
+    echo "Please provide a birthdate!";
+    exit;
+}
 
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-    CURLOPT_URL => "https://imdb8.p.rapidapi.com/actors/v2/get-born-today?today=$birthdate&first=5",
+    CURLOPT_URL => "https://imdb188.p.rapidapi.com/api/v1/getBornOn?month=$month&day=$day",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
@@ -13,8 +36,8 @@ curl_setopt_array($curl, [
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => "GET",
     CURLOPT_HTTPHEADER => [
-        "X-RapidAPI-Host: imdb8.p.rapidapi.com",
-        "X-RapidAPI-Key: 4648805e9fmshdb928ab630e4755p16c96fjsn3872a1f3e683"
+        "X-RapidAPI-Host: imdb188.p.rapidapi.com",
+        "X-RapidAPI-Key: YOUR_API_KEY"
     ],
 ]);
 
@@ -24,64 +47,17 @@ $err = curl_error($curl);
 curl_close($curl);
 
 if ($err) {
-    echo "cURL Error #:" . $err;
-    exit;   
+    // Handle cURL error
+    echo "Failed to fetch data from the API. Please try again later.";
 } else {
-    $actor_ids = get_actor_ids($response);
-    $actor_names = get_actor_names($actor_ids);
-}
-
-function get_actor_ids($response) {
-	$actor_ids = array();
-	$response = json_decode($response, true);
-	$nodes_list = $response['data']['bornToday']['edges'];
-	foreach ($nodes_list as $node) {
-		array_push($actor_ids, $node['node']['id']);
-	}
-	// foreach ($actor_ids as $actor_id) {
-	// 	echo "$actor_id <br>";
-	// }
-	return $actor_ids;
-}
-
-function get_actor_name($id) {
-
-    $curl = curl_init();
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://imdb8.p.rapidapi.com/actors/v2/get-bio?nconst=$id",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
-        CURLOPT_HTTPHEADER => [
-            "X-RapidAPI-Host: imdb8.p.rapidapi.com",
-            "X-RapidAPI-Key: 4648805e9fmshdb928ab630e4755p16c96fjsn3872a1f3e683"
-        ],
-    ]);
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-
-    curl_close($curl);
-
-    if ($err) {
-        echo "cURL Error #:" . $err;
-        exit;
+    $response = json_decode($response, true);
+    if(isset($response['data']['list'])) {
+        $list = $response['data']['list'];
+        foreach ($list as $actor) {
+            echo $actor['nameText']['text'] . "<br>";
+        }
     } else {
-        $response = json_decode($response, true);
-        $data = $response["data"]["name"]["nameText"];
-        $text = $data["text"];
-
-        return $text;
-    }
-}
-
-function get_actor_names(array $actor_ids){
-    foreach ($actor_ids as $actor_id) {
-        $name = get_actor_name($actor_id);
-        echo "$name <br>";
+        // Handle API response error
+        echo "Failed to retrieve actor data from the API.";
     }
 }

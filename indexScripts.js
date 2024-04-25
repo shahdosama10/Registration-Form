@@ -159,14 +159,20 @@ function checkActors() {
     var day = birthdateParts[2];
     var formattedDate = month + "-" + day;
     
+    // Display status message
+    document.getElementById("actorsResult").style.display = "block";
+    document.getElementById("actorsResult").innerHTML = "Fetching actors...";
+
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             if (xhr.status == 200) {
-                document.getElementById("actorsResult").style.display = "block";
+                // Request successful
                 document.getElementById("actorsResult").innerHTML = xhr.responseText;
             } else {
+                // Request failed
                 console.error("Error:", xhr.statusText);
+                document.getElementById("actorsResult").innerHTML = "An error occurred. Please try again.";
             }
         }
     };
