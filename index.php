@@ -27,6 +27,7 @@
             <label for="birthdate">Birthdate:</label>
             <input type="date" id="birthdate" name="birthdate">
             <button type="button" onclick="checkActors()">Check Actors</button>
+            <div id="actorsResult" class="actors-result" hidden></div>
             <br>
 
             <label for="phone">Phone:</label>
